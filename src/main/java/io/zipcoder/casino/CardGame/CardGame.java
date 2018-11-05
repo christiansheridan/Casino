@@ -1,6 +1,6 @@
-package io.zipcoder.casino;
+package io.zipcoder.casino.CardGame;
 
-import java.util.ArrayList;
+import io.zipcoder.casino.Interfaces.Game;
 
 public abstract class CardGame implements Game {
 

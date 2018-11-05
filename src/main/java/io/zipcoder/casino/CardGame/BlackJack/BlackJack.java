@@ -1,4 +1,9 @@
-package io.zipcoder.casino;
+package io.zipcoder.casino.CardGame.BlackJack;
+
+import io.zipcoder.casino.CardGame.Card;
+import io.zipcoder.casino.CardGame.CardGame;
+import io.zipcoder.casino.Interfaces.Gamble;
+import io.zipcoder.casino.Player;
 
 import java.util.ArrayList;
 

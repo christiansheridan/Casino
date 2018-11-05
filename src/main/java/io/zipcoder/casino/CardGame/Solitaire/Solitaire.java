@@ -1,4 +1,8 @@
-package io.zipcoder.casino;
+package io.zipcoder.casino.CardGame.Solitaire;
+
+import io.zipcoder.casino.CardGame.Card;
+import io.zipcoder.casino.CardGame.CardGame;
+import io.zipcoder.casino.Player;
 
 public class Solitaire extends CardGame {
 

@@ -1,4 +1,6 @@
-package io.zipcoder.casino;
+package io.zipcoder.casino.DiceGame;
+
+import io.zipcoder.casino.Interfaces.Game;
 
 public abstract class DiceGame implements Game {
 

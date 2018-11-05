@@ -8,6 +8,11 @@ package io.zipcoder.casino;
 
 // Jackpot option? Low chance but player wins $1mil
 
+import io.zipcoder.casino.CardGame.BlackJack.BlackJack;
+import io.zipcoder.casino.DiceGame.Craps.Craps;
+import io.zipcoder.casino.CardGame.Solitaire.Solitaire;
+import io.zipcoder.casino.Interfaces.Game;
+
 public class Casino {
 
     private int money;

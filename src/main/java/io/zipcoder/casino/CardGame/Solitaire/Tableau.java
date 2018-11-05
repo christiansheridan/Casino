@@ -1,4 +1,6 @@
-package io.zipcoder.casino;
+package io.zipcoder.casino.CardGame.Solitaire;
+
+import io.zipcoder.casino.CardGame.Card;
 
 import java.util.Stack;
 
