@@ -13,8 +13,8 @@ public abstract class DiceGame implements Game {
         for (int i = 0; i < numOfDice; i++) {
             die[i] = (int) Math.floor((Math.random() * 6) + 1);
             sum += die[i];
+            System.out.println("Die #" + (i+1) + " = " + die[i]);
         }
-
         return sum;
     }
 
