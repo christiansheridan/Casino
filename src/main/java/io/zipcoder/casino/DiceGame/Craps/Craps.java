@@ -40,11 +40,11 @@ public class Craps extends DiceGame implements Gamble {
 
     }
 
-    public void addPlayer() {
+    public void addPlayer(Player player) {
 
     }
 
-    public void removePlayer() {
+    public void removePlayer(Player player) {
 
     }
 }
