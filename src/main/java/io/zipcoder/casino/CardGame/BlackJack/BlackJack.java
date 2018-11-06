@@ -31,7 +31,7 @@ public class BlackJack extends CardGame implements Gamble {
         this.numOfTurns = 0;
     }
 
-    // basically draw
+    // basically draw testestestetstsetsetstest
     public void hit(BlackJackPlayer blackJackPlayer) {
         setJustDealt(false);
         Card playerCard1 = deck.draw();
