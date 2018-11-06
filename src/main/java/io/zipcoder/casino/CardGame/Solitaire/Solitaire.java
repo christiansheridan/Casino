@@ -7,6 +7,7 @@ import io.zipcoder.casino.Player;
 
 public class Solitaire extends CardGame {
 
+    //create setting for 3 card draw. which will affect the draw method.
     private Player player;
     private Tableau tableau;
     private Foundation foundation;
