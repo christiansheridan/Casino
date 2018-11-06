@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class Deck {
 
-    public Stack<Card> deckOfCards = new Stack<Card>();
+    public Stack<Card> deckOfCards = new Stack<>();
 
     public void shuffle(){
         Collections.shuffle(deckOfCards);
