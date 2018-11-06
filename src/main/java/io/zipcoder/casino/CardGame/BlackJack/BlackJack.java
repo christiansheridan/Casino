@@ -7,6 +7,7 @@ import io.zipcoder.casino.Interfaces.Gamble;
 import io.zipcoder.casino.Player;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BlackJack extends CardGame implements Gamble {
 
@@ -30,18 +31,12 @@ public class BlackJack extends CardGame implements Gamble {
         this.numOfTurns = 0;
     }
 
-//    public BlackJack(){
-//        this.blackJackPlayers = new ArrayList<BlackJackPlayer>();
-//    }
-
-//    public BlackJack(Player player) {
-//        BlackJackPlayer blackJackPlayer = new BlackJackPlayer(player);
-//        this.blackJackPlayers.add(blackJackPlayer);
-//    }
-
     // basically draw
-    public Card hit() {
-        return null;
+    public void hit(BlackJackPlayer blackJackPlayer) {
+        setJustDealt(false);
+        Card playerCard1 = deck.draw();
+        blackJackPlayer.addToHand(playerCard1);
+        System.out.println(blackJackPlayer.getPlayerHand().toString());
     }
 
     public void flip() {
@@ -50,6 +45,7 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void split() {
+        setJustDealt(false);
         // must be the same card value
     }
 
@@ -57,6 +53,8 @@ public class BlackJack extends CardGame implements Gamble {
         if (getJustDealt() == true) {
             blackJackPlayer.addToBetPot(blackJackPlayer.getInitialBet());
         }
+
+        setJustDealt(false);
         // must be right after deal, and you can only get one more card
     }
 
@@ -76,19 +74,22 @@ public class BlackJack extends CardGame implements Gamble {
 
     public void deal(BlackJackPlayer blackJackPlayer) {
         // BlackJackPlayer player1 = blackJackPlayers.get(playerIndex);
-        blackJackPlayers.add(blackJackPlayer);
+        // blackJackPlayers.add(blackJackPlayer);
         // should we move this to start instead? we would also need to deal for each player if multiple
+        deck.shuffle();
         Card playerCard1 = deck.draw();
         blackJackPlayer.addToHand(playerCard1);
 
         Card dealerCard1 = deck.draw();
         dealerHand.add(dealerCard1);
+        System.out.println("Mystery Card");
 
         Card playerCard2 = deck.draw();
         blackJackPlayer.addToHand(playerCard2);
 
         Card dealerCard2 = deck.draw();
         dealerHand.add(dealerCard2);
+        System.out.println(dealerCard2);
 
         setJustDealt(true);
     }
@@ -98,8 +99,21 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void start() {
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Enter an initial bet: ");
+        int initialBet = reader.nextInt();
+
+        start(initialBet);
+    }
+
+    public void start(int initialBet) {
         // upon starting a new game, every player places a bet? make a loop???
-        betAmount(50, blackJackPlayers.get(0));
+        BlackJackPlayer blackJackPlayer = blackJackPlayers.get(0);
+        if (initialBet < minBet) {
+            System.out.println("TOo low");
+        } else {
+            blackJackPlayer.setInitialBet(betAmount(initialBet, blackJackPlayers.get(0)));
+        }
     }
 
     public void end() {
@@ -126,7 +140,6 @@ public class BlackJack extends CardGame implements Gamble {
                 break;
             }
         }
-
     }
 
     public int betAmount(int amount, BlackJackPlayer blackJackPlayer) {
