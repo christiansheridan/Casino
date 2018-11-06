@@ -6,7 +6,8 @@ import java.util.Stack;
 
 public class Tableau {
 
-    //consider making an undo method
+    //consider making an undo method.
+    //or better yet, create method that lets you know where you can place. highlighted card in the UI.
 
     public Stack<Card> stack;
     public static Stack<Card> tempStack;
@@ -31,20 +32,17 @@ public class Tableau {
             while(!stack.peek().equals(c))  tempStack.push(stack.pop());
             tempStack.push(stack.pop());
             }
+        unCover();
         return tempStack;
         }
 
     //does not need parameter. with a stack representing each column, will simply call 'stack'.place() to drop the tempStack on top of it.
     public void place(){
         if (this.canReceive(tempStack.peek())){
-//            for(Card c : tempStack){
-//                tempStack.pop();
-//                stack.push(c);
-//            }
             while(tempStack.iterator().hasNext()){
+                unCover();
                 stack.push(tempStack.pop());
             }
-//           tempStack.forEach(e -> stack.push(tempStack.pop()));
         }
     }
 
@@ -57,5 +55,9 @@ public class Tableau {
             System.out.println("Can't match " + stack.peek().toString() + " and " + c.toString());
             return false;
         }
+    }
+
+    private void unCover(){
+        if (this.stack.peek().isCovered()) this.stack.peek().setCovered(false);
     }
 }
