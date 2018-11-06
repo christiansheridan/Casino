@@ -48,7 +48,7 @@ public class Tableau {
 
     //checks whether 'top' card of stack is opposite color and 1 above passed card
     private boolean canReceive(Card c) {
-        if ((this.stack.peek().getFace().getValue() - 1) == c.getFace().getValue()
+        if ((this.stack.peek().getFace().getPrimaryValue() - 1) == c.getFace().getPrimaryValue()
                 && (this.stack.peek().isBlack() != c.isBlack())) {
             return true;
         } else {

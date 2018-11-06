@@ -1,5 +1,7 @@
 package io.zipcoder.casino.Interfaces;
 
+import io.zipcoder.casino.Player;
+
 public interface Game {
     void start();
 
@@ -7,7 +9,7 @@ public interface Game {
 
     void takeATurn();
 
-    void addPlayer();
+    void addPlayer(Player player);
 
-    void removePlayer();
+    void removePlayer(Player player);
 }

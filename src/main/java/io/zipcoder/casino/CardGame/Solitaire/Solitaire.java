@@ -32,11 +32,11 @@ public class Solitaire extends CardGame {
 
     }
 
-    public void addPlayer() {
+    public void addPlayer(Player player) {
 
     }
 
-    public void removePlayer() {
+    public void removePlayer(Player player) {
 
     }
 
