@@ -18,6 +18,14 @@ public class DeckTest {
     }
 
     @Test
+    public void testDraw() {
+        String actual = deck.draw().toString();
+        String expected = "CLUBS-KING";
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void testShuffle() {
         deck.shuffle();
         String actual = deck.deckOfCards.get(0).toString();
