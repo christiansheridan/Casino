@@ -5,7 +5,6 @@ import io.zipcoder.casino.CardGame.BlackJack.BlackJackPlayer;
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.Deck;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
