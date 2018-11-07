@@ -1,6 +1,7 @@
 package io.zipcoder.casino.CardGame.BlackJack;
 
 import io.zipcoder.casino.CardGame.Card;
+import io.zipcoder.casino.CardGame.Face;
 import io.zipcoder.casino.Player;
 
 import java.util.ArrayList;
@@ -10,31 +11,56 @@ public class BlackJackPlayer {
     private Player player;
 
     private int initialBet;
-    private int handValue;
-    private ArrayList<Card> playerHand;
-    private int betPot;
+    private int handValue = 0;
+    private ArrayList<Card> playerHand = new ArrayList<>();
+    private ArrayList<Card> newHand;
+    private int betPot = 0;
 
     public BlackJackPlayer(Player player) {
         this.player = player;
-        this.handValue = 0;
-        this.playerHand = new ArrayList<Card>();
-        this.betPot = 0;
     }
 
     public void addToHand(Card card){
-        playerHand.add(card);
+        this.playerHand.add(card);
+    }
+
+    public boolean hasAce() {
+        ArrayList<Face> onlyFaces = new ArrayList<>();
+        for (Card card : playerHand) {
+            onlyFaces.add(card.getFace());
+        }
+        return onlyFaces.contains(Face.ACE);
     }
 
     public ArrayList<Card> getPlayerHand() {
-        return playerHand;
+        return this.playerHand;
+    }
+
+    public ArrayList<Card> createNewHand() {
+        newHand = new ArrayList<>();
+        return this.newHand;
+    }
+
+    public ArrayList<Card> getSecondHand() {
+        return this.newHand;
+    }
+
+    public ArrayList<Card> getDealerHand() {
+        ArrayList<Card> dealerHandRemoveMystery = new ArrayList<>();
+
+        for (int i = 1; i < this.playerHand.size(); i++) {
+           dealerHandRemoveMystery.add(this.playerHand.get(i));
+        }
+
+        return dealerHandRemoveMystery;
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public int getInitialBet() {
-        return initialBet;
+        return this.initialBet;
     }
 
     public void addToBetPot(int amount) {
@@ -42,11 +68,19 @@ public class BlackJackPlayer {
     }
 
     public int getBetPot() {
-        return betPot;
+        return this.betPot;
     }
 
     public void setInitialBet(int amount){
         this.initialBet = amount;
+    }
+
+    public int getHandValue() {
+        return this.handValue;
+    }
+
+    public void setHandValue(int value) {
+        this.handValue = value;
     }
 
 }
