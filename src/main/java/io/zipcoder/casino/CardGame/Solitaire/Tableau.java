@@ -5,16 +5,14 @@ import io.zipcoder.casino.CardGame.Card;
 import java.util.Stack;
 
 public class Tableau {
-
     //consider making an undo method.
     //or better yet, create method that lets you know where you can place. highlighted card in the UI.
 
     public Stack<Card> stack;
-    public static Stack<Card> tempStack;
+    public static Stack<Card> tempStack = new Stack<>();
 
     public Tableau(){
         this.stack = new Stack<>();
-        this.tempStack = new Stack<>();
     }
 
     public Integer size() { return stack.size(); }
@@ -28,7 +26,7 @@ public class Tableau {
 
     //c = the top card of the subStack you want to pull - ex. 6D, 5C, 4H, 3S, 2D, AS; if pulling 4H and down, c = 4H.
     public Stack<Card> pull(Card c){
-        if(stack.contains(c)){
+        if(this.stack.contains(c)){
             while(!stack.peek().equals(c))  tempStack.push(stack.pop());
             tempStack.push(stack.pop());
             }
@@ -41,23 +39,27 @@ public class Tableau {
         if (this.canReceive(tempStack.peek())){
             while(tempStack.iterator().hasNext()){
                 unCover();
-                stack.push(tempStack.pop());
+                add(tempStack.pop());
             }
         }
     }
 
     //checks whether 'top' card of stack is opposite color and 1 above passed card
     private boolean canReceive(Card c) {
-        if ((this.stack.peek().getFace().getPrimaryValue() - 1) == c.getFace().getPrimaryValue()
-                && (this.stack.peek().isBlack() != c.isBlack())) {
-            return true;
+        if(size() > 0) {
+            if ((this.stack.peek().getFace().getPrimaryValue() - 1) == c.getFace().getPrimaryValue()
+                    && (this.stack.peek().isBlack() != c.isBlack())) {
+                return true;
+            } else {
+                System.out.println("Can't match " + stack.peek().toString() + " and " + c.toString());
+                return false;
+            }
         } else {
-            System.out.println("Can't match " + stack.peek().toString() + " and " + c.toString());
-            return false;
-        }
+            if (c.getFace().getPrimaryValue() == 13) return true; //primVal of 13 is KING
+        } return false;
     }
 
     private void unCover(){
-        if (this.stack.peek().isCovered()) this.stack.peek().setCovered(false);
+        if (size() > 0 && this.stack.peek().isCovered()) this.stack.peek().setCovered(false);
     }
 }
