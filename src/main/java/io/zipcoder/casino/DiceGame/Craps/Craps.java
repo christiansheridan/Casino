@@ -9,34 +9,40 @@ import io.zipcoder.casino.Player;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Craps extends DiceGame implements Gamble {
+    Scanner scanner;
 
 
-    public int[] betOptions = {2, 3, 4, 5, 6, 8, 9, 10, 11, 12};
     int rollNumber = 0;
-    private ArrayList<CrapsPlayers> crapsPlayers;
+    private CrapsPlayers crapsPlayer;
     private int minBet;
     private Player player;
-    private Map<Integer, Integer> betPots;
     private Dice dice;
     private int pointer;
-
-    public int getPointer() {
-        return pointer;
-    }
-
-    public void setPointer(int pointer) {
-        this.pointer = pointer;
-    }
 
 
     public Craps(Player player) {
         CrapsPlayers crappyPlayer = new CrapsPlayers(player);
-        ArrayList<Integer> betOptions = new ArrayList<>(10);
-        this.crapsPlayers = new ArrayList<>();
+        this.crapsPlayer = new CrapsPlayers(player);
         this.minBet = 10;
         this.dice = new Dice();
+        scanner = new Scanner(System.in);
+    }
+
+    public void gamePlay(){
+        System.out.println("What would you like to bet? Min bet is: " + minBet);
+        int amount = scanner.nextInt();
+        System.out.println("Are you ready to roll?");
+        String response = scanner.next();
+        if(response.equalsIgnoreCase("yes")) {
+            rollDice();
+        } else {
+            System.out.println("ready yet?");
+        }
+        firstRoll();
+        remainingRolls();
     }
 
     public int rollDice() {
@@ -49,9 +55,9 @@ public class Craps extends DiceGame implements Gamble {
     public void firstRoll() {
         rollDice();
         if (rollDice() == 7 || rollDice() == 11) {
-            //player wins!!
+            win(crapsPlayer);
         } else if (rollDice() == 2 || rollDice() == 3 || rollDice() == 12) {
-            //player loses :(
+            lose(crapsPlayer);
         } else {
             pointer = rollDice();
         }
@@ -60,12 +66,9 @@ public class Craps extends DiceGame implements Gamble {
     public void remainingRolls() {
         rollDice();
         if (rollDice() == pointer) {
-            //player wins pot
+            win(crapsPlayer);
         } else if (rollDice() == 7) {
-            //player loses all money in pot
-        } else {
-            //if betOptions == rollDice()
-            //casino adds money to the pot - matching whatever bet the player made
+            lose(crapsPlayer);
         }
     }
 
@@ -73,9 +76,36 @@ public class Craps extends DiceGame implements Gamble {
         return amount;
     }
 
-    public void bet() {
+    public int betAmount(int amount, CrapsPlayers crapsPlayers) {
+        crapsPlayers.addToBetPot(amount);
+        return betAmount(amount, crapsPlayers.getPlayer());
+    }
 
+    public void win(CrapsPlayers crapsPlayers){
+        player.setWallet(player.getWallet() + crapsPlayers.getBetPot() * 2);
+        System.out.println("Congrats! You won: $" + crapsPlayers.getBetPot());
+        System.out.println("Would you like to play again?");
+        String response = scanner.next();
+        if(response.equalsIgnoreCase("yes")) {
+            start();
+        } else if(response.equalsIgnoreCase("no")) {
+            end();
+        } else {
+            System.out.println("Sorry I didn't quite get that, try again!");
+        }
+    }
 
+    public void lose(CrapsPlayers crapsPlayers) {
+        System.out.println("I'm so sorry, you lose!");
+        System.out.println("Would you like to play again?");
+        String response = scanner.next();
+        if(response.equalsIgnoreCase("yes")) {
+            start();
+        } else if(response.equalsIgnoreCase("no")) {
+            end();
+        } else {
+            System.out.println("Sorry I didn't quite get that, try again!");
+        }
     }
 
     public void distributePot(int amount, Player player) {
@@ -83,32 +113,46 @@ public class Craps extends DiceGame implements Gamble {
     }
 
     public void start() {
-        //when starting a game passLine bet or dontPassLine bet is made
-
-
+        gamePlay();
     }
 
     public void end() {
+        System.out.println("Would you like to leave the table?");
+        String response = scanner.next();
+        if(response.equalsIgnoreCase("yes")) {
+            exitTable(crapsPlayer);
+        } else if(response.equalsIgnoreCase("no")) {
+            start();
+        }
 
+    }
+
+    public void exitTable(CrapsPlayers crapsPlayer){
+        removePlayer(player);
     }
 
     public void takeATurn() {
 
     }
 
+    public int getPointer() {
+        return pointer;
+    }
+
+    public void setPointer(int pointer) {
+        this.pointer = pointer;
+    }
+
     public void addPlayer(Player player) {
         CrapsPlayers crappyPlayer = new CrapsPlayers(player);
-        this.crapsPlayers.add(crappyPlayer);
+        this.crapsPlayer = crappyPlayer;
     }
 
     public void removePlayer(Player player) {
-        for (CrapsPlayers crappyPlayer : crapsPlayers) {
-            if (crappyPlayer.getPlayer() == player) {
-                this.crapsPlayers.remove(crappyPlayer);
-                break;
+            if (crapsPlayer.getPlayer() == player) {
+                this.crapsPlayer = null;
             }
 
         }
 
     }
-}
