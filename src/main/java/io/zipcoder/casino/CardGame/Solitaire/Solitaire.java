@@ -5,19 +5,65 @@ import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.Player;
 
+import java.util.Stack;
+
+import static io.zipcoder.casino.CardGame.Solitaire.Tableau.tempStack;
+
 public class Solitaire extends CardGame {
+    //populate arrayTabs upon construction.
+    //clean up.
 
     //create setting for 3 card draw. which will affect the draw method.
     private Player player;
-    private Tableau tableau;
+    public Tableau tab1, tab2, tab3, tab4, tab5, tab6, tab7;
     private Foundation foundation;
-    private java.util.Stack wastepile;
-
-    public static Deck solitaireDeck = new Deck();
-
+    public Stack<Card> wastePile;
+    public Tableau[] arrayTabs;
 
     public Solitaire(Player player) {
         this.player = player;
+        wastePile = new Stack<>();
+        tab1 = new Tableau();
+        tab2 = new Tableau();
+        tab3 = new Tableau();
+        tab4 = new Tableau();
+        tab5 = new Tableau();
+        tab6 = new Tableau();
+        tab7 = new Tableau();
+        arrayTabs = new Tableau[]{tab1, tab2, tab3, tab4, tab5, tab6, tab7};
+    }
+
+    public static Deck solitaireDeck = new Deck();
+
+    public void deal() {
+        solitaireDeck.shuffle();
+        for (int i = 0; i < arrayTabs.length; i++) {
+            for (int j = 0; j < arrayTabs.length; j++) {
+                if (j >= i) arrayTabs[j].add(draw());
+                if (j == i) arrayTabs[i].stack.peek().setCovered(false);
+                else arrayTabs[i].stack.peek().setCovered(true);
+            }
+        }
+    }
+
+    public void drawCard(){
+        wastePile.push(solitaireDeck.draw());
+    }
+
+    public Stack<Card> pullFromWaste(){
+        tempStack.push(wastePile.pop());
+        return tempStack;
+    }
+
+    public Stack<Card> pull(Card c){
+        return findTab(c).pull(c);
+    }
+
+    public Tableau findTab(Card c){
+        for (Tableau tab : arrayTabs)
+            if (tab.stack.contains(c))
+                return tab;
+        return null;
     }
 
     public void start(){
@@ -48,6 +94,10 @@ public class Solitaire extends CardGame {
 
     public Card draw() {
         return solitaireDeck.draw();
+    }
+
+    public void resetDeck(){
+        solitaireDeck = new Deck();
     }
 
     public void flip() {
