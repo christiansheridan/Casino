@@ -11,34 +11,35 @@ public class SolitaireTest {
     Solitaire s = new Solitaire(new Player("Murphy"));
 
     @Test
-    public void testfind(){
+    public void testfind() {
         s.resetDeck();
         s.tab1.add(toCard("Ace", "Hearts"));
-        s.tab2.add(toCard("five","diamonds"));
+        s.tab2.add(toCard("five", "diamonds"));
 
-        System.out.println(s.findTab(toCard("Ace","Hearts")).stack.peek());
+        System.out.println(s.findTab(toCard("Ace", "Hearts")).stack.peek());
     }
+
     @Test
-    public void testPull(){
+    public void testPull() {
         s.resetDeck();
         s.tab1.add(toCard("Ace", "Hearts"));
-        s.tab2.add(toCard("five","diamonds"));
+        s.tab2.add(toCard("five", "diamonds"));
 
         Integer preSize = s.tab1.size();
-        s.pull(toCard("Ace","Hearts")); //main method tested
+        s.pull(toCard("Ace", "Hearts")); //main method tested
         Integer postSize = s.tab1.size();
 
         Integer actual = preSize - postSize;
         Integer expected = 1;
 
-        Assert.assertEquals(expected,actual);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void drawCard() {
         s.drawCard();
         System.out.println(s.wastePile.peek().toString());
-        Assert.assertEquals(1,s.wastePile.size());
+        Assert.assertEquals(1, s.wastePile.size());
     }
 
     @Test
@@ -53,14 +54,15 @@ public class SolitaireTest {
     }
 
     @Test
-    public void testDeal(){
+    public void testDeal() {
         s.resetDeck();
         s.deal();
-        int i=0;
-        for (Tableau tab : s.arrayTabs){
-            System.out.println("tab " + i); i++;
+        int i = 0;
+        for (Tableau tab : s.arrayTabs) {
+            System.out.println("tab " + i);
+            i++;
             tab.stack.forEach(e -> System.out.println(e));
-
+        }
         Assert.assertTrue(s.arrayTabs[0].size() == 1);
         Assert.assertTrue(s.arrayTabs[1].size() == 2);
         Assert.assertTrue(s.arrayTabs[2].size() == 3);
@@ -68,12 +70,25 @@ public class SolitaireTest {
         Assert.assertTrue(s.arrayTabs[4].size() == 5);
         Assert.assertTrue(s.arrayTabs[5].size() == 6);
         Assert.assertTrue(s.arrayTabs[6].size() == 7);
-        Assert.assertTrue(s.solitaireDeck.deckOfCards.size() == (52-28));
-        }
+        Assert.assertTrue(s.solitaireDeck.deckOfCards.size() == (52 - 28));
     }
 
     @Test
-    public void testCoverage(){
-
+    public void testCoverage() {
+        s.resetDeck();
+        s.deal();
+        int i = 0;
+        for (Tableau tab : s.arrayTabs) {
+            System.out.println("tab " + i);
+            i++;
+            tab.stack.forEach(e -> System.out.println(e + " " + e.isCovered()));
+        }
+        Assert.assertFalse(s.arrayTabs[0].stack.peek().isCovered());
+        Assert.assertFalse(s.arrayTabs[1].stack.peek().isCovered());
+        Assert.assertFalse(s.arrayTabs[2].stack.peek().isCovered());
+        Assert.assertFalse(s.arrayTabs[3].stack.peek().isCovered());
+        Assert.assertFalse(s.arrayTabs[4].stack.peek().isCovered());
+        Assert.assertFalse(s.arrayTabs[5].stack.peek().isCovered());
+        Assert.assertFalse(s.arrayTabs[6].stack.peek().isCovered());
     }
 }

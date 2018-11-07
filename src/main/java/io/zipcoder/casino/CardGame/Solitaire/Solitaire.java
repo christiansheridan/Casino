@@ -10,7 +10,6 @@ import java.util.Stack;
 import static io.zipcoder.casino.CardGame.Solitaire.Tableau.tempStack;
 
 public class Solitaire extends CardGame {
-    //populate arrayTabs upon construction.
     //clean up.
 
     //create setting for 3 card draw. which will affect the draw method.
@@ -40,10 +39,10 @@ public class Solitaire extends CardGame {
         for (int i = 0; i < arrayTabs.length; i++) {
             for (int j = 0; j < arrayTabs.length; j++) {
                 if (j >= i) arrayTabs[j].add(draw());
-                if (j == i) arrayTabs[i].stack.peek().setCovered(false);
-                else arrayTabs[i].stack.peek().setCovered(true);
+                if (j != i) arrayTabs[j].stack.peek().setCovered(true);
             }
         }
+        for(Tableau tab : arrayTabs) tab.stack.peek().setCovered(false);
     }
 
     public void drawCard(){
