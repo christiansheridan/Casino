@@ -27,6 +27,7 @@ public class CrapsPlayers {
 
         public void addToBetPot(int amount) {
             betPot += amount;
+            this.player.setWallet(player.getWallet()- amount);
         }
 
         public int getBetPot() {
