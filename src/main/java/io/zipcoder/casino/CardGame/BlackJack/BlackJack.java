@@ -156,7 +156,7 @@ public class BlackJack extends CardGame implements Gamble {
         int initialBet;
         // String input = userInput.toUpperCase();
 
-        System.out.println("\nHi " + instance.getPlayer().getName() + "! Welcome to BlackJack!\n\nThe minimum bet is $50.\n\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
         initialBet = scanner.nextInt();
         start(initialBet);
 
@@ -334,7 +334,7 @@ public class BlackJack extends CardGame implements Gamble {
         blackJackPlayer.setInitialBet(0);
         blackJackPlayer.setBetPot(0);
 
-        System.out.println("\n\nWould you like to play again?\n<< Yes - No >>");
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nWould you like to play again?\n\n<< Yes - No >>");
         String userInput = scanner.nextLine();
         String input = userInput.toUpperCase();
 
@@ -343,7 +343,7 @@ public class BlackJack extends CardGame implements Gamble {
                 start();
                 break;
             case "NO":
-                System.out.println("\n\nBYYYYEEEEEE");
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nReturning to the Casino!");
                 // go back to casino
                 instance.chooseGame();
                 break;
