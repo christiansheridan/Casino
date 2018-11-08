@@ -42,29 +42,6 @@ public class BlackJack extends CardGame implements Gamble {
             System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString());
         }
 
-//        if (player == blackJackPlayers.get(1)) {
-//
-//            if (countPlayerHand(player).get(0) > 21 || (countPlayerHand(player).size() == 2 && countPlayerHand(player).get(1) > 21)) {
-//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)) + "\n\n* * * * * * * * * *\n\nToo high, you lose!");
-//            } else {
-//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)));
-//            }
-//
-//            if (countPlayerHand(player).get(0) == 21 || (countPlayerHand(player).size() > 1 && countPlayerHand(player).get(1) == 21)) {
-//                System.out.println("\n* * * * * * * * * *\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
-//            }
-//        } else if (player == dealer) {
-//
-//            if (countPlayerHand(dealer).get(0) > 21 || (countPlayerHand(dealer).size() == 2 && countPlayerHand(dealer).get(1) > 21)) {
-//                // System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString() + "\n\nDealer's Current Hand: \n\n" + formatHand(dealer.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(dealer)) + "\n\n* * * * * * * * * *\n\nThe Dealer is a loser, you win!!");
-//            } else {
-//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString() + "\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nHand Value: ??");
-//            }
-//
-//            if (countPlayerHand(dealer).get(0) == 21 || (countPlayerHand(dealer).size() > 1 && countPlayerHand(dealer).get(1) == 21)) {
-//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe MYSTERY-CARD was " + dealer.getPlayerHand().get(0) + "\n\nThe Dealer wins, sucks to suck");
-//            }
-//        }
     }
 
     public void split(BlackJackPlayer player) {
