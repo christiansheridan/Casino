@@ -18,7 +18,7 @@ public class CrapsPlayers {
         }
 
         public Player getPlayer() {
-            return player;
+            return this.player;
         }
 
         public void addToBetPot(int amount) {
@@ -27,18 +27,19 @@ public class CrapsPlayers {
         }
 
         public int getInitialBet() {
-            return initialBet;
+            return this.initialBet;
         }
 
         public void setInitialBet(int amount){
             this.initialBet = amount;
         }
 
-    public void setWallet(int wallet) {
+
+        public void setWallet(int wallet) {
             this.wallet = wallet;
     }
 
-    public int getWallet() {
+        public int getWallet() {
             return wallet;
     }
 }
