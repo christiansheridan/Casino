@@ -25,6 +25,7 @@ public class BlackJack extends CardGame implements Gamble {
         BlackJackPlayer blackJackPlayer = new BlackJackPlayer(player);
         blackJackPlayers.add(dealer);
         this.blackJackPlayers.add(blackJackPlayer);
+        deck.shuffle();
     }
 
     public void hit(BlackJackPlayer player) {
@@ -32,21 +33,32 @@ public class BlackJack extends CardGame implements Gamble {
         Card card = deck.draw();
         player.addToHand(card);
 
-        if (countPlayerHand(player).get(0) > 21 || (countPlayerHand(player).size() == 2 && countPlayerHand(player).get(1) > 21)) {
-            System.out.println("Your Current Hand: \n" + formatHand(player.getPlayerHand()) + "\nHand Value: " + formatHandValue(countPlayerHand(player)) + "\nToo high, you lose!");
-        } else {
-            System.out.println("Your Current Hand: \n" + formatHand(player.getPlayerHand()) + "\nHand Value: " + formatHandValue(countPlayerHand(player)));
+        if (player == blackJackPlayers.get(1)) {
+
+            if (countPlayerHand(player).get(0) > 21 || (countPlayerHand(player).size() == 2 && countPlayerHand(player).get(1) > 21)) {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)) + "\n\n* * * * * * * * * *\n\nToo high, you lose!");
+            } else {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)));
+            }
+
+            if (countPlayerHand(player).get(0) == 21 || (countPlayerHand(player).size() > 1 && countPlayerHand(player).get(1) == 21)) {
+                System.out.println("\n* * * * * * * * * *\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
+            }
+        } else if (player == dealer) {
+
+            if (countPlayerHand(dealer).get(0) > 21 || (countPlayerHand(dealer).size() == 2 && countPlayerHand(dealer).get(1) > 21)) {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nDealer's Current Hand: \n\n" + formatHand(dealer.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(dealer)) + "\n\n* * * * * * * * * *\n\nThe Dealer is a loser, you win!!");
+            } else {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nHand Value: ??");
+            }
+
+            if (countPlayerHand(dealer).get(0) == 21 || (countPlayerHand(dealer).size() > 1 && countPlayerHand(dealer).get(1) == 21)) {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe MYSTERY-CARD was " + dealer.getPlayerHand().get(0) + "\n\nThe Dealer wins, sucks to suck");
+            }
         }
     }
 
-//    public void flip() {
-//        // shoulder technically be card.setCovered(false); or something like that
-//        boolean covered = false;
-//    }
-
     public void split(BlackJackPlayer player) {
-
-        System.out.println(player.getPlayerHand() + "\n");
 
         Card movingCard = player.getPlayerHand().get(1);
 
@@ -56,10 +68,7 @@ public class BlackJack extends CardGame implements Gamble {
             player.getPlayerHand().remove(movingCard);
         }
 
-        System.out.println(player.getPlayerHand() + " " + player.getSecondHand());
         setJustDealt(false);
-
-        // must be the same card value
     }
 
     public void doubleDown(BlackJackPlayer blackJackPlayer) {
@@ -72,7 +81,7 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void stand() {
-        endTurn();
+        numOfTurns++;
         // (end turn?) what does "take a turn" actually initiate
     }
 
@@ -132,7 +141,7 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void deal() {
-        deck.shuffle();
+        BlackJackPlayer thePlayer = this.blackJackPlayers.get(1);
 
         for (int i = 0; i < 2; i++) {
             for (BlackJackPlayer player : this.blackJackPlayers) {
@@ -141,8 +150,14 @@ public class BlackJack extends CardGame implements Gamble {
             }
         }
 
-        System.out.println("Your Current Hand: \n" + formatHand(this.blackJackPlayers.get(1).getPlayerHand()) + "\nHand Value: " + formatHandValue(countPlayerHand(this.blackJackPlayers.get(1))) + "\n");
-        System.out.println("Dealer's Current Hand: \nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\nHand Value: ??" + "\n");
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(thePlayer.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(thePlayer)));
+        System.out.println("\n* * * * * * * * * *\n\nDealer's Current Hand:\n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nHand Value: ??");
+
+        if (countPlayerHand(thePlayer).get(0) == 21 || (countPlayerHand(thePlayer).size() > 1 && countPlayerHand(thePlayer).get(1) == 21)) {
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
+        } else if (countPlayerHand(dealer).get(0) == 21 || (countPlayerHand(dealer).size() > 1 && countPlayerHand(dealer).get(1) == 21)) {
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe MYSTERY-CARD was " + dealer.getPlayerHand().get(0) + "\n\nThe Dealer wins, sucks to suck");
+        }
 
         setJustDealt(true);
     }
@@ -164,12 +179,12 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void start(int initialBet) {
-        // upon starting a new game, every player places a bet? make a loop???
-        BlackJackPlayer blackJackPlayer = blackJackPlayers.get(0);
+        BlackJackPlayer blackJackPlayer = blackJackPlayers.get(1);
+
         if (initialBet < minBet) {
             System.out.println("TOo low");
         } else {
-            blackJackPlayer.setInitialBet(betAmount(initialBet, blackJackPlayers.get(0)));
+            blackJackPlayer.setInitialBet(betAmount(initialBet, blackJackPlayers.get(1)));
         }
     }
 
@@ -197,6 +212,10 @@ public class BlackJack extends CardGame implements Gamble {
                 break;
             }
         }
+    }
+
+    public ArrayList<BlackJackPlayer> getBlackJackPlayers() {
+        return blackJackPlayers;
     }
 
     public int betAmount(int amount, BlackJackPlayer blackJackPlayer) {
@@ -232,7 +251,6 @@ public class BlackJack extends CardGame implements Gamble {
                 stringHand += " || ";
             }
         }
-
         return stringHand;
     }
 

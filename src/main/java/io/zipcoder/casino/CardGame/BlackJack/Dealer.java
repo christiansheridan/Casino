@@ -4,6 +4,14 @@ import io.zipcoder.casino.Player;
 
 public class Dealer extends Player {
 
-    public Dealer() { }
+    private final String name;
+
+    public Dealer() {
+        name = "Dealer";
+    }
+
+    public String getName() {
+        return name;
+    }
 
 }

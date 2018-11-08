@@ -46,13 +46,16 @@ public class BlackJackPlayer {
     }
 
     public ArrayList<Card> getDealerHand() {
-        ArrayList<Card> dealerHandRemoveMystery = new ArrayList<>();
+        if (this.player.getName().equals("Dealer")) {
+            ArrayList<Card> dealerHandRemoveMystery = new ArrayList<>();
 
-        for (int i = 1; i < this.playerHand.size(); i++) {
-           dealerHandRemoveMystery.add(this.playerHand.get(i));
+            for (int i = 1; i < this.playerHand.size(); i++) {
+                dealerHandRemoveMystery.add(this.playerHand.get(i));
+            }
+            return dealerHandRemoveMystery;
+        } else {
+            throw new IllegalStateException("This player is not the dealer.");
         }
-
-        return dealerHandRemoveMystery;
     }
 
     public Player getPlayer() {

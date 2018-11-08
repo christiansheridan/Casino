@@ -1,16 +1,15 @@
-package io.zipcoder.casino;
+package io.zipcoder.casino.CardGame.BlackJack;
 
-import io.zipcoder.casino.CardGame.BlackJack.BlackJack;
-import io.zipcoder.casino.CardGame.BlackJack.BlackJackPlayer;
 import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
 import io.zipcoder.casino.CardGame.Suit;
+import io.zipcoder.casino.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BlackJackTest {
 
@@ -32,6 +31,40 @@ public class BlackJackTest {
     }
 
     @Test
+    public void testHitAgain_NoBust() {
+        Card ace = new Card(Suit.HEARTS, Face.ACE);
+        Card two = new Card(Suit.HEARTS, Face.TWO);
+        Card six = new Card(Suit.HEARTS, Face.SIX);
+        testHand.add(ace);
+        testHand.add(two);
+        testHand.add(six);
+
+        deck.shuffle();
+        blackJack.hit(testPlayer);
+
+        boolean expected = false;
+        boolean actual = (testPlayer.getHandValue() > 21);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testHitAgain_BustOrWin() {
+        Card queen = new Card(Suit.HEARTS, Face.QUEEN);
+        Card king = new Card(Suit.HEARTS, Face.KING);
+        testHand.add(queen);
+        testHand.add(king);
+
+        deck.shuffle();
+        blackJack.hit(testPlayer);
+
+        boolean expected = true;
+        boolean actual = (testPlayer.getHandValue() >= 21);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void testSplit() {
         blackJack.setJustDealt(true);
         Card seven1 = new Card(Suit.HEARTS, Face.SEVEN);
@@ -44,6 +77,19 @@ public class BlackJackTest {
 
         Face expected = testPlayer.getPlayerHand().get(0).getFace();
         Face actual = testPlayer.getSecondHand().get(0).getFace();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void testDoubleDown() {
+        blackJack.setJustDealt(true);
+        testPlayer.setInitialBet(blackJack.betAmount(50, testPlayer));
+        blackJack.doubleDown(testPlayer);
+
+        int expected = 100;
+        int actual = testPlayer.getBetPot();
 
         Assert.assertEquals(expected, actual);
     }
@@ -138,43 +184,25 @@ public class BlackJackTest {
     }
 
     @Test
-    public void testDoubleDown() {
-        blackJack.setJustDealt(true);
-        testPlayer.setInitialBet(blackJack.betAmount(50, testPlayer));
-        blackJack.doubleDown(testPlayer);
+    public void testAddPlayer() {
+        Player newPlayer = new Player("Dwight White");
+        blackJack.addPlayer(newPlayer);
 
-        int expected = 100;
-        int actual = testPlayer.getBetPot();
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testPlayerHasAce_True() {
-        Card ace = new Card(Suit.HEARTS, Face.ACE);
-
-        testHand.add(ace);
-        testHand.add(deck.draw());
-        testHand.add(deck.draw());
-
-        boolean expected = true;
-        boolean actual = testPlayer.hasAce();
+        int expected = 3;
+        int actual = blackJack.getBlackJackPlayers().size();
 
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testPlayerHasAce_False() {
-        testHand.add(deck.draw());
-        testHand.add(deck.draw());
-        testHand.add(deck.draw());
+    public void testRemovePlayer() {
+        Player newPlayer = new Player("Dwight White");
+        blackJack.addPlayer(newPlayer);
+        blackJack.removePlayer(newPlayer);
 
-        boolean expected = false;
-        boolean actual = testPlayer.hasAce();
+        int expected = 2;
+        int actual = blackJack.getBlackJackPlayers().size();
 
         Assert.assertEquals(expected, actual);
     }
-
-
-
 }
