@@ -54,6 +54,7 @@ public class Craps extends DiceGame implements Gamble {
     public int rollDice() {
         int sum = rollDice(2);
         System.out.println("Total = " + sum);
+        System.out.println("______________");
         rollNumber++;
         return sum;
     }
