@@ -58,6 +58,11 @@ public class BlackJackPlayer {
         }
     }
 
+    public ArrayList<Card> resetHand(){
+        this.playerHand = new ArrayList<>();
+        return this.playerHand;
+    }
+
     public Player getPlayer() {
         return this.player;
     }
@@ -73,6 +78,8 @@ public class BlackJackPlayer {
     public int getBetPot() {
         return this.betPot;
     }
+
+    public void setBetPot(int value) {this.betPot = value; }
 
     public void setInitialBet(int amount){
         this.initialBet = amount;

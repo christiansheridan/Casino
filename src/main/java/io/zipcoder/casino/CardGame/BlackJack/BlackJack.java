@@ -19,6 +19,7 @@ public class BlackJack extends CardGame implements Gamble {
     private boolean justDealt = false;
     private int numOfTurns = 0;
     private BlackJackPlayer dealer = new BlackJackPlayer(new Dealer());
+    int stands = 0;
 
 
     public BlackJack(Player player) {
@@ -32,30 +33,38 @@ public class BlackJack extends CardGame implements Gamble {
         setJustDealt(false);
         Card card = deck.draw();
         player.addToHand(card);
+        countPlayerHand(player);
+
 
         if (player == blackJackPlayers.get(1)) {
-
-            if (countPlayerHand(player).get(0) > 21 || (countPlayerHand(player).size() == 2 && countPlayerHand(player).get(1) > 21)) {
-                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)) + "\n\n* * * * * * * * * *\n\nToo high, you lose!");
-            } else {
-                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)));
-            }
-
-            if (countPlayerHand(player).get(0) == 21 || (countPlayerHand(player).size() > 1 && countPlayerHand(player).get(1) == 21)) {
-                System.out.println("\n* * * * * * * * * *\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
-            }
-        } else if (player == dealer) {
-
-            if (countPlayerHand(dealer).get(0) > 21 || (countPlayerHand(dealer).size() == 2 && countPlayerHand(dealer).get(1) > 21)) {
-                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nDealer's Current Hand: \n\n" + formatHand(dealer.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(dealer)) + "\n\n* * * * * * * * * *\n\nThe Dealer is a loser, you win!!");
-            } else {
-                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHit: " + card.toString() + "\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nHand Value: ??");
-            }
-
-            if (countPlayerHand(dealer).get(0) == 21 || (countPlayerHand(dealer).size() > 1 && countPlayerHand(dealer).get(1) == 21)) {
-                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe MYSTERY-CARD was " + dealer.getPlayerHand().get(0) + "\n\nThe Dealer wins, sucks to suck");
-            }
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString());
+        } else if (player == this.dealer) {
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString());
         }
+
+//        if (player == blackJackPlayers.get(1)) {
+//
+//            if (countPlayerHand(player).get(0) > 21 || (countPlayerHand(player).size() == 2 && countPlayerHand(player).get(1) > 21)) {
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)) + "\n\n* * * * * * * * * *\n\nToo high, you lose!");
+//            } else {
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou Hit: " + card.toString() + "\n\nYour Current Hand: \n\n" + formatHand(player.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(player)));
+//            }
+//
+//            if (countPlayerHand(player).get(0) == 21 || (countPlayerHand(player).size() > 1 && countPlayerHand(player).get(1) == 21)) {
+//                System.out.println("\n* * * * * * * * * *\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
+//            }
+//        } else if (player == dealer) {
+//
+//            if (countPlayerHand(dealer).get(0) > 21 || (countPlayerHand(dealer).size() == 2 && countPlayerHand(dealer).get(1) > 21)) {
+//                // System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString() + "\n\nDealer's Current Hand: \n\n" + formatHand(dealer.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(dealer)) + "\n\n* * * * * * * * * *\n\nThe Dealer is a loser, you win!!");
+//            } else {
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer Hit: " + card.toString() + "\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nHand Value: ??");
+//            }
+//
+//            if (countPlayerHand(dealer).get(0) == 21 || (countPlayerHand(dealer).size() > 1 && countPlayerHand(dealer).get(1) == 21)) {
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe MYSTERY-CARD was " + dealer.getPlayerHand().get(0) + "\n\nThe Dealer wins, sucks to suck");
+//            }
+//        }
     }
 
     public void split(BlackJackPlayer player) {
@@ -72,7 +81,7 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void doubleDown(BlackJackPlayer blackJackPlayer) {
-        if (getJustDealt() == true) {
+        if (getJustDealt()) {
             blackJackPlayer.addToBetPot(blackJackPlayer.getInitialBet());
         }
 
@@ -81,8 +90,8 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void stand() {
-        numOfTurns++;
-        // (end turn?) what does "take a turn" actually initiate
+        setJustDealt(false);
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nStanding still!");
     }
 
     public int calculate_AceIsOne(BlackJackPlayer player) {
@@ -141,22 +150,13 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void deal() {
-        BlackJackPlayer thePlayer = this.blackJackPlayers.get(1);
 
         for (int i = 0; i < 2; i++) {
             for (BlackJackPlayer player : this.blackJackPlayers) {
                 Card card = deck.draw();
                 player.addToHand(card);
+                countPlayerHand(player);
             }
-        }
-
-        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(thePlayer.getPlayerHand()) + "\n\nHand Value: " + formatHandValue(countPlayerHand(thePlayer)));
-        System.out.println("\n* * * * * * * * * *\n\nDealer's Current Hand:\n\nMYSTERY-CARD || " + formatHand(dealer.getDealerHand()) + "\n\nHand Value: ??");
-
-        if (countPlayerHand(thePlayer).get(0) == 21 || (countPlayerHand(thePlayer).size() > 1 && countPlayerHand(thePlayer).get(1) == 21)) {
-            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
-        } else if (countPlayerHand(dealer).get(0) == 21 || (countPlayerHand(dealer).size() > 1 && countPlayerHand(dealer).get(1) == 21)) {
-            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe MYSTERY-CARD was " + dealer.getPlayerHand().get(0) + "\n\nThe Dealer wins, sucks to suck");
         }
 
         setJustDealt(true);
@@ -167,25 +167,208 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public BlackJackPlayer getDealer() {
-        return dealer;
+        return this.dealer;
     }
 
     public void start() {
-        Scanner reader = new Scanner(System.in);
-        System.out.println("Enter an initial bet: ");
-        int initialBet = reader.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        // System.out.println("\nWould you like the hear the rules of the game?\n<< Yes - No - Quit >>");
+        // String userInput = scanner.nextLine();
+        int initialBet;
+        // String input = userInput.toUpperCase();
 
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
+        initialBet = scanner.nextInt();
         start(initialBet);
+
+//        switch (input) {
+//            case "YES":
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nGoogle. Okay, let's begin!\n\nHow much would you like to bet?");
+//                initialBet = scanner.nextInt();
+//                start(initialBet);
+//                break;
+//            case "NO":
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nOkay, let's begin!\n\nHow much would you like to bet?");
+//                initialBet = scanner.nextInt();
+//                start(initialBet);
+//                break;
+//            case "QUIT":
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nk bye felicia");
+//                // go back to casino??
+//                break;
+//            default:
+//                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nPlease try again.");
+//                start();
+//                break;
+//        }
     }
 
     public void start(int initialBet) {
         BlackJackPlayer blackJackPlayer = blackJackPlayers.get(1);
 
         if (initialBet < minBet) {
-            System.out.println("TOo low");
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nThe minimum bet is $50. Please try again.");
+            start();
         } else {
             blackJackPlayer.setInitialBet(betAmount(initialBet, blackJackPlayers.get(1)));
         }
+
+        // Player player = new Player("Theta Thunder the III");
+        Scanner scanner = new Scanner(System.in);
+
+        // BlackJack blackJack = new BlackJack(player);
+
+        // BlackJackPlayer blackJackPlayer = blackJack.getPlayer(1);
+        // BlackJackPlayer dealer = blackJack.getDealer();
+
+        BlackJackPlayer activePlayer;
+//
+//        System.out.println("\nWelcome to BlackJack!\n\nThe minimum bet is $50.");
+//        blackJack.start();
+
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nGAME START - DEALING CARDS");
+        deal();
+
+        int turnNumber = getNumOfTurns();
+        int stands = getStands();
+
+        boolean flag = true;
+
+        while (flag) {
+            if (turnNumber % 2 == 1) {
+                activePlayer = this.dealer;
+            } else {
+                activePlayer = blackJackPlayer;
+            }
+
+            ArrayList<Integer> handValue = countPlayerHand(activePlayer);
+
+            if (turnNumber == 0 && this.dealer.getHandValue() == 21) {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\n" + formatHand(this.dealer.getPlayerHand()) + "\n\nDealer's Hand Value: " + this.dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nBlackjack! Dealer wins!");
+                blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() - (blackJackPlayer.getBetPot() * 2));
+                System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() * 2 + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                flag = false;
+            } else if (turnNumber == 0 && blackJackPlayer.getHandValue() == 21) {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nBlackjack! Player wins!");
+                blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() + (blackJackPlayer.getBetPot() * 2));
+                System.out.println("\nYou Won: $" + blackJackPlayer.getBetPot() * 2 + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                flag = false;
+            } else if (activePlayer == blackJackPlayer && stands < 2) {
+
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\nMYSTERY-CARD || " + formatHand(this.dealer.getDealerHand()) + "\n\nDealer's Hand Value: ??" +
+                        "\n\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + formatHandValue(handValue) +
+                        "\n\n~~~~~~~~~~~~~~~~~~~\n\nYOUR TURN" + "\n\n~~~~~~~~~~~~~~~~~~~\n\nWhat do you want to do?\n<< Hit - Stand - Double Down - Split - Quit >>");
+                String inputResponse = scanner.nextLine();
+                String response = inputResponse.toUpperCase();
+
+                switch (response) {
+                    case "HIT":
+                        hit(blackJackPlayer);
+
+                        if (blackJackPlayer.getHandValue() > 21) {
+                            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nToo high, you lose!");
+                            blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() - blackJackPlayer.getBetPot());
+                            System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                            flag = false;
+                        } else if (blackJackPlayer.getHandValue() == 21) {
+                            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Hand: \n\n" + formatHand(blackJackPlayer.getPlayerHand()) + "\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nYou win!!! YAYAYAYAYAYAYYAYAYAYAYAYYY");
+                            blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() + blackJackPlayer.getBetPot());
+                            System.out.println("\nYou Won: $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                            flag = false;
+                        }
+                        break;
+                    case "STAND":
+                        setNumOfTurns(turnNumber++);
+                        stand();
+                        stands++;
+                        break;
+                    case "DOUBLE DOWN":
+                        if (getJustDealt()) {
+                            doubleDown(activePlayer);
+                            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Current Bet: " + blackJackPlayer.getBetPot());
+                        } else {
+                            System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYou can only double down right after the deal. Please choose another option.");
+                        }
+                        break;
+                    case "SPLIT":
+                        split(activePlayer);
+                        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nok so the code itself works but idk how to actually implement it into the game without going crazy so plz choose something else");
+                        break;
+                    case "QUIT":
+                        flag = false;
+                        break;
+                    default:
+                        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nInput unknown, please try again");
+                        break;
+                }
+            } else if (activePlayer == this.dealer && stands < 2) {
+
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDEALER'S TURN");
+
+                if (this.dealer.getHandValue() > 15 && this.dealer.getHandValue() < 21) {
+                    setNumOfTurns(turnNumber++);
+                    stand();
+                } else {
+                    hit(this.dealer);
+
+                    if (this.dealer.getHandValue() > 21) {
+                        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\n" + formatHand(this.dealer.getPlayerHand()) + "\n\nDealer's Hand Value: " + this.dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nDealer bust, you win!");
+                        blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() + blackJackPlayer.getBetPot());
+                        System.out.println("\nYou Won: $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                        flag = false;
+                    } else if (this.dealer.getHandValue() == 21) {
+                        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDealer's Current Hand: \n\n" + formatHand(this.dealer.getPlayerHand()) + "\n\nDealer's Hand Value: " + this.dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nBlackjack! Dealer wins!");
+                        blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() - blackJackPlayer.getBetPot());
+                        System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                        flag = false;
+                    } else if (handValue.get(0) < 21 || (handValue.size() > 2 && handValue.get(1) < 21)) {
+                        setNumOfTurns(turnNumber++);
+                        stand();
+                    }
+                }
+                stands++;
+
+            } else if (stands == 2) {
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nDETERMINING WINNER...");
+
+                if (blackJackPlayer.getHandValue() > this.dealer.getHandValue()) {
+                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\nDealer's Hand Value: " + this.dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nYou win!");
+                    blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() + blackJackPlayer.getBetPot());
+                    System.out.println("\nYou Won: $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                } else if (blackJackPlayer.getHandValue() < this.dealer.getHandValue()) {
+                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\nDealer's Hand Value: " + this.dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nDealer wins! You lose!");
+                    blackJackPlayer.getPlayer().setWallet(blackJackPlayer.getPlayer().getWallet() - blackJackPlayer.getBetPot());
+                    System.out.println("\nYou Lost $" + blackJackPlayer.getBetPot() + "\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                } else if (blackJackPlayer.getHandValue() == this.dealer.getHandValue()) {
+                    System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nYour Hand Value: " + blackJackPlayer.getHandValue() + "\n\nDealer's Hand Value: " + this.dealer.getHandValue() + "\n\n~~~~~~~~~~~~~~~~~~~\n\nTie, no one wins");
+                    System.out.println("\nCurrent Wallet: $" + blackJackPlayer.getPlayer().getWallet());
+                }
+                flag = false;
+            }
+        }
+
+        this.dealer.resetHand();
+        blackJackPlayer.resetHand();
+        setNumOfTurns(0);
+        setStands(0);
+        blackJackPlayer.setInitialBet(0);
+        blackJackPlayer.setBetPot(0);
+
+        System.out.println("\n\nWould you like to play again?\n<< Yes - No >>");
+        String userInput = scanner.nextLine();
+        String input = userInput.toUpperCase();
+
+        switch (input) {
+            case "YES":
+                start();
+                break;
+            case "NO":
+                System.out.println("\n\nBYYYYEEEEEE");
+                // go back to casino
+                break;
+        }
+
+
     }
 
     public void end() {
@@ -193,7 +376,6 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void takeATurn() {
-
     }
 
     // add to game interface?
@@ -237,6 +419,22 @@ public class BlackJack extends CardGame implements Gamble {
 
     public void setJustDealt(boolean justDealt) {
         this.justDealt = justDealt;
+    }
+
+    public int getStands() {
+        return stands;
+    }
+
+    public void setStands(int stands) {
+        this.stands = stands;
+    }
+
+    public int getNumOfTurns() {
+        return numOfTurns;
+    }
+
+    public void setNumOfTurns(int numOfTurns) {
+        this.numOfTurns = numOfTurns;
     }
 
     public String formatHand(ArrayList<Card> array) {
