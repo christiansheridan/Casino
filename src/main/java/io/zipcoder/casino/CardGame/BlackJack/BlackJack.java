@@ -4,6 +4,7 @@ import io.zipcoder.casino.CardGame.Card;
 import io.zipcoder.casino.CardGame.CardGame;
 import io.zipcoder.casino.CardGame.Deck;
 import io.zipcoder.casino.CardGame.Face;
+import io.zipcoder.casino.Casino_test;
 import io.zipcoder.casino.Interfaces.Gamble;
 import io.zipcoder.casino.Player;
 
@@ -149,12 +150,13 @@ public class BlackJack extends CardGame implements Gamble {
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
+        Casino_test instance = Casino_test.getInstance();
         // System.out.println("\nWould you like the hear the rules of the game?\n<< Yes - No - Quit >>");
         // String userInput = scanner.nextLine();
         int initialBet;
         // String input = userInput.toUpperCase();
 
-        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
+        System.out.println("\nHi " + instance.getPlayer().getName() + "! Welcome to BlackJack!\n\nThe minimum bet is $50.\n\n~~~~~~~~~~~~~~~~~~~\n\nHow much would you like to bet?");
         initialBet = scanner.nextInt();
         start(initialBet);
 
@@ -181,6 +183,7 @@ public class BlackJack extends CardGame implements Gamble {
     }
 
     public void start(int initialBet) {
+        Casino_test instance = Casino_test.getInstance();
         BlackJackPlayer blackJackPlayer = blackJackPlayers.get(1);
 
         if (initialBet < minBet) {
@@ -203,7 +206,7 @@ public class BlackJack extends CardGame implements Gamble {
 //        System.out.println("\nWelcome to BlackJack!\n\nThe minimum bet is $50.");
 //        blackJack.start();
 
-        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nGAME START - DEALING CARDS");
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nGAME START - DEALING CARDS   test player name" + blackJackPlayer.getPlayer().getName());
         deal();
 
         int turnNumber = getNumOfTurns();
@@ -272,7 +275,7 @@ public class BlackJack extends CardGame implements Gamble {
                         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nok so the code itself works but idk how to actually implement it into the game without going crazy so plz choose something else");
                         break;
                     case "QUIT":
-                        flag = false;
+                        instance.chooseGame();
                         break;
                     default:
                         System.out.println("\n~~~~~~~~~~~~~~~~~~~\n\nInput unknown, please try again");
@@ -342,6 +345,7 @@ public class BlackJack extends CardGame implements Gamble {
             case "NO":
                 System.out.println("\n\nBYYYYEEEEEE");
                 // go back to casino
+                instance.chooseGame();
                 break;
         }
 
