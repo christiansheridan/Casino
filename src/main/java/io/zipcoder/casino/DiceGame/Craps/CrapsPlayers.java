@@ -5,7 +5,7 @@ import io.zipcoder.casino.Player;
 public class CrapsPlayers {
 
         private Player player;
-
+        private int wallet;
         private int initialBet;
         private int rollValue;
         private int betPot;
@@ -21,21 +21,24 @@ public class CrapsPlayers {
             return player;
         }
 
-        public int getInitialBet() {
-            return initialBet;
-        }
-
         public void addToBetPot(int amount) {
             betPot += amount;
             this.player.setWallet(player.getWallet()- amount);
         }
 
-        public int getBetPot() {
-            return betPot;
+        public int getInitialBet() {
+            return initialBet;
         }
 
         public void setInitialBet(int amount){
             this.initialBet = amount;
         }
 
+    public void setWallet(int wallet) {
+            this.wallet = wallet;
     }
+
+    public int getWallet() {
+            return wallet;
+    }
+}
