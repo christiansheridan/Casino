@@ -1,6 +1,8 @@
 package io.zipcoder.casino;
 
 import io.zipcoder.casino.DiceGame.Craps.Craps;
+import io.zipcoder.casino.DiceGame.Dice;
+import io.zipcoder.casino.DiceGame.DiceGame;
 
 public class Test {
 

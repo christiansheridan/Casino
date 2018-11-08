@@ -23,6 +23,8 @@ public class Craps extends DiceGame implements Gamble {
     private int pointer;
 
 
+
+
     public Craps(Player player) {
         CrapsPlayers crappyPlayer = new CrapsPlayers(player);
         this.crapsPlayer = new CrapsPlayers(player);
@@ -34,6 +36,7 @@ public class Craps extends DiceGame implements Gamble {
     public void gamePlay(){
         System.out.println("What would you like to bet? Min bet is: $" + minBet);
         int amount = scanner.nextInt();
+        //add a try catch
         if (amount<minBet){
             System.out.println("Sorry but the minimum bet is $"+minBet);
             gamePlay();
@@ -54,6 +57,7 @@ public class Craps extends DiceGame implements Gamble {
     public int rollDice() {
         int sum = rollDice(2);
         System.out.println("Total = " + sum);
+        System.out.println("______________");
         rollNumber++;
         return sum;
     }
@@ -70,12 +74,27 @@ public class Craps extends DiceGame implements Gamble {
     }
 
     public void remainingRolls() {
+        System.out.println("Are you ready to roll?  yes or no");
+        String response = scanner.next();
+        if(response.equalsIgnoreCase("yes")) {
+        } else if(response.equalsIgnoreCase("no")) {
+            System.out.println("would you like to exit?");
+            String response2 = scanner.next();
+            if(response2.equalsIgnoreCase("yes")){
+                exitTable(crapsPlayer);
+            } else if(response2.equalsIgnoreCase("no")){
+                gamePlay();
+            }
+        } else{
+            System.out.println("not valid");
+        }
         int result = rollDice();
         if (result == pointer) {
             win(crapsPlayer);
         } else if (result == 7) {
             lose(crapsPlayer);
-        } else remainingRolls();
+        } else
+            remainingRolls();
     }
 
     public int betAmount(int amount, Player player) {
